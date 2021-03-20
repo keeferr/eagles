@@ -1,0 +1,13 @@
+---
+title: "branching"
+author: "Keelin"
+date: "3/20/2021"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+diamonds%>%
+ select(price, color, x)
+```
