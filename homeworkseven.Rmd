@@ -1,0 +1,101 @@
+---
+title: "homework7"
+author: "Keelin"
+date: "3/26/2021"
+output:
+  word_document: default
+  html_document: default
+always_allow_html: true
+
+---
+
+```{r}
+# DS 413/613     HOMEWORK 7    Web Scraping and Rectangling
+# Instructions:  Create an R markdown file and a Word file and push
+# both files to a Repository that you have created in GitHub. 
+# Required packages and libraries are given below; 
+# install.packages("rvest") 
+# install.packages("listviewer") 
+#listviewer::jsonedit(gh_users)  
+library(rvest)   
+library(dplyr)   
+library(tidyverse)  
+library(repurrrsive)
+
+# 1)  Using the following link,  https://www.imdb.com/list/ls091520106/, 
+# R coding for Web scraping and Selector Gadget, produce the following tibble. 
+# (The first 5 rows are shown below)  Use the step by step methodology 
+# suggested in class showing all steps and code. 
+Link <- "https://www.imdb.com/list/ls091520106/"
+page = read_html(Link)
+Movienames = page%>% html_nodes(".lister-item-header a")%>%
+  html_text()
+Movienames
+
+Link <- "https://www.imdb.com/list/ls091520106/"
+page = read_html(Link)
+Ratings = page%>% html_nodes(".ipl-rating-star__rating")%>%
+  html_text()
+Ratings
+
+
+Link <- "https://www.imdb.com/list/ls091520106/"
+page = read_html(Link)
+Runtime = page%>% html_nodes(".runtime")%>%
+  html_text()
+Runtime
+
+moviesdataframe = data.frame(Movienames,Ratings,Runtime)
+moviesdataframe
+
+# Now let's improve the format and appearance of the data table by transforming
+# into a tibble
+
+is_tibble(moviesdataframe)
+
+
+as_tibble(moviesdataframe)
+
+
+# 2)
+# a) Explain or describe nested Lists.  (Three or four sentences)
+ # A nested list is a list within a list. Nested lists can get complicated so they 
+ # usually need to be transformed into a data frame for better understanding. They can be 
+ # used to be arranged in hierarical structures. 
+# b) Open and explore data for Git Hub repos by running the following code gh_repo.  
+# Comment on the structure and arrangement of the data (Two or three sentences)
+
+listviewer::jsonedit(gh_repos)
+#gh_repos
+# withiin the gh_repos, there are 6 lists of repositiories that belong to a user. 5 of the lists have thirty lists. 
+# one list has 26 lists. within each of those 26/30 lists are another list of 68 variables, there are 68 variables. 
+
+ 
+# c)  In two or three sentences, explain what happens to the data when you run the code; 
+repos <- tibble(repo = gh_repos)
+repos
+# With this code, we organized the data into a tibble. This makes it easier to see how many lists and elements are in the repo. 
+# it summarizes the data for us into a more organized comprehensive way. It also makes bundling and 
+# extracting easier. 
+# d)  Describe the data representation when the listserver tool is applied. 
+# And go into detail explaining why we have a nested List configuration.
+# What do the numbers 30 and 68 represent ? (6 or 7 sentences)
+# Run the following code:
+  listviewer::jsonedit(gh_repos)
+
+# It shows the layers of the list. The number 30 represents how many lists are within the original 
+# six lists that belong to github users. the 68 represents the number of variables in the 30 lists. This function makes 
+# it easier to view data details as well as explore how many lists and variables there are. It also 
+  #allows us to search through the entire data and nested lists. 
+
+
+# e)  Use and show R unesting code to produce the tibble below.
+  tibble(repo = gh_repos) %>% 
+    unnest_auto(repo) %>% 
+    unnest_auto(repo)
+
+
+
+
+```
+
